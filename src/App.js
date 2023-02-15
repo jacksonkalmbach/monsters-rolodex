@@ -4,19 +4,34 @@ import './App.css';
 class App extends Component {
   constructor() {
     super();
-
     this.state = {
-      name: 'Jackson'
+      monsters: []
     }
+  }
+
+  componentDidMount() {
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(response => response.json())
+      .then(users => this.setState(() => {
+        return {
+          monsters: users
+        }
+      },
+      () => {console.log(this.state)}
+      ))
   }
 
   render() {
     return(
       <div className='App'>
-        <div className='App-header'>
-          <p>{this.state.name}</p>
-          <button onClick={()=> console.log('clicked')}>Click Me</button>
-        </div>
+        {
+          this.state.monsters.map((monsters) => {
+            return (
+            <div key={monsters.id}>
+              <h1>{monsters.name}</h1>
+            </div>
+          )})
+        }
       </div>
     )
   }
